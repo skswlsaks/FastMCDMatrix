@@ -256,13 +256,13 @@ QSMatrix<T> QSMatrix<T>::operator-(const std::vector<T>& rhs) {
 template<typename T>
 std::vector<T> QSMatrix<T>::operator*(const std::vector<T>& rhs) {
     std::vector<T> result(rhs.size(), 0.0);
-
     for (unsigned i=0; i<rows; i++) {
+        T sum = 0;
         for (unsigned j=0; j<cols; j++) {
-            result[i] = this->mat[i][j] * rhs[j];
+            sum += this->mat[i][j] * rhs[j];
         }
+        result[i] = sum;
     }
-
     return result;
 }
 

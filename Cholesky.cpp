@@ -3,7 +3,6 @@
 
 #include "matrix.h"
 #include "Cholesky.h"
-#include <vector>
 #include <iostream>
 #include <math.h>
 
@@ -44,8 +43,23 @@ T Cholesky<T>::determinant(int n, QSMatrix<T> &A) {
     return pow(det, 2);
 }
 
+template <typename T>
+QSMatrix<T> Cholesky<T>::inverse(int n, QSMatrix<T> &A) {
+    QSMatrix<T> L(decomposition(n, A));
+    QSMatrix<T> inverseL(n, n, 0);
+    T sum = 0;
 
-
+    for (int i = 0; i < n; ++i) {
+        inverseL(i, i) = 1 / L(i, i);
+        for (int j = i + 1; j < n; ++j) {
+            sum = 0;
+            for (int k = i; k < j; ++k)
+                sum -= L(j, k) * inverseL(k, i);
+            inverseL(j, i) = sum / L(j, j);
+        }
+    }
+    return inverseL;
+}
 
 
 #endif

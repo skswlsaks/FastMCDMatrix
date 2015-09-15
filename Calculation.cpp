@@ -1,5 +1,8 @@
 #include <vector>
 #include "Calculation.h"
+#include "Cholesky.h"
+
+
 
 vector<double> Calculations::mean_col(QSMatrix<double> m) {
     int cols = m.get_cols();
@@ -35,17 +38,27 @@ vector<double> Calculations::mahDistance(vector<double> mean,
     int m = data.get_cols();
     vector<double> md(n);
 
+    Cholesky<double> cho;
+    cov = cho.inverse(cov.get_rows(), cov);
+
     for (int i = 0; i < n; ++i) {
         vector<double> tmp(n);
         for (int j = 0; j < m; ++j)
             tmp[j] = (data.row(i))[j] - mean[j];
-
-
+        md[i] = mahProduct(tmp, cov);
     }
-
-
+    return md;
 }
 
+double Calculations::mahProduct(vector<double> centered,
+                                QSMatrix<double> inversecov) {
+    vector<double> tmp = inversecov * centered;
+    double sum = 0;
+    for (int i = 0; i < centered.size(); ++i) {
+        sum += centered[i] * tmp[i];
+    }
+    return sum;
+}
 
 // Transpose matrix and multiply itself
 QSMatrix<double> Calculations::transposeMultiply(vector<double> v) {
@@ -59,3 +72,15 @@ QSMatrix<double> Calculations::transposeMultiply(vector<double> v) {
     }
     return result;
 };
+
+QSMatrix<double> Calculations::Cstep(QSMatrix<double> Hold, int h) {
+    vector<double> Told = mean_col(Hold);
+    QSMatrix<double> Sold = covariance(Hold);
+    vector<double> md = mahDistance(Told, Sold);
+    vector<size_t> index = sort_indexes(md);
+    QSMatrix<double> out(h, Hold.get_cols(), 0);
+    for (int i = 0; i < h; ++i) {
+        out.row(i) = data.row((const unsigned int &) index[i]);
+    }
+    return out;
+}

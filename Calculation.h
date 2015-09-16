@@ -5,6 +5,7 @@
 #include "Sampling.h"
 #include "matrix.h"
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ public:
     Calculations() {};
     ~Calculations() {};
     vector<double> mean_col(QSMatrix<double> m);
-    QSMatrix<double> covariance(QSMatrix<double> m);
+    QSMatrix<double> covariance(vector<double> mean, QSMatrix<double> m);
     QSMatrix<double> transposeMultiply(vector<double> v);
     vector<double> mahDistance(vector<double> mean, QSMatrix<double> cov);
     double mahProduct(vector<double> centered, QSMatrix<double> inversecov);
@@ -23,7 +24,7 @@ public:
 
     // Sort vector value and get sorted index
     template <typename T>
-    vector<size_t> sort_indexes(const vector<T> &v) {
+    static vector<size_t> sort_indexes(const vector<T> &v) {
 
         // initialize original index locations
         vector<size_t> idx(v.size());

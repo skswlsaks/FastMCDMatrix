@@ -19,11 +19,12 @@ vector<double> Calculations::mean_col(QSMatrix<double> m) {
     return result;
 }
 
-QSMatrix<double> Calculations::covariance(QSMatrix<double> m) {
+QSMatrix<double> Calculations::covariance(vector<double> mean,
+                                          QSMatrix<double> m) {
     int cols = m.get_cols();
     int rows = m.get_rows();
     QSMatrix<double> centered(rows, cols, 0);
-    centered = m - mean_col(m);
+    centered = m - mean;
     QSMatrix<double> sum(cols, cols, 0);
     for (int i = 0; i < rows; ++i) {
         vector<double> tmp = centered.row(i);
@@ -75,7 +76,7 @@ QSMatrix<double> Calculations::transposeMultiply(vector<double> v) {
 
 QSMatrix<double> Calculations::Cstep(QSMatrix<double> Hold, int h) {
     vector<double> Told = mean_col(Hold);
-    QSMatrix<double> Sold = covariance(Hold);
+    QSMatrix<double> Sold = covariance(Told, Hold);
     vector<double> md = mahDistance(Told, Sold);
     vector<size_t> index = sort_indexes(md);
     QSMatrix<double> out(h, Hold.get_cols(), 0);

@@ -13,6 +13,7 @@ private:
 
 public:
 
+    Sampling() {};
     Sampling(QSMatrix<double>& dat) :data(dat) {};
     ~Sampling() {};
 

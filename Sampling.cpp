@@ -1,6 +1,8 @@
 #include "Sampling.h"
 #include "matrix.h"
 #include <vector>
+#include <ctime>
+#include <algorithm>
 #include <stdlib.h>
 
 using namespace std;

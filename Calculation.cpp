@@ -4,7 +4,7 @@
 
 
 
-vector<double> Calculations::mean_col(QSMatrix<double> m) {
+vector<double> Calculations::mean_col(QSMatrix<double> &m) {
     int cols = m.get_cols();
     int rows = m.get_rows();
     vector<double> result(cols);
@@ -19,8 +19,8 @@ vector<double> Calculations::mean_col(QSMatrix<double> m) {
     return result;
 }
 
-QSMatrix<double> Calculations::covariance(vector<double> mean,
-                                          QSMatrix<double> m) {
+QSMatrix<double> Calculations::covariance(vector<double> &mean,
+                                          QSMatrix<double> &m) {
     int cols = m.get_cols();
     int rows = m.get_rows();
     QSMatrix<double> centered(rows, cols, 0);
@@ -33,14 +33,14 @@ QSMatrix<double> Calculations::covariance(vector<double> mean,
     return sum/(rows-1);
 }
 
-vector<double> Calculations::mahDistance(vector<double> mean,
-                                         QSMatrix<double> cov) {
+vector<double> Calculations::mahDistance(vector<double> &mean,
+                                         QSMatrix<double> &cov) {
     int n = data.get_rows();
     int m = data.get_cols();
     vector<double> md(n);
 
     Cholesky<double> cho;
-    cov = cho.inverse(cov.get_rows(), cov);
+    cov = cho.inverse(cov);
 
     for (int i = 0; i < n; ++i) {
         vector<double> tmp(n);
@@ -51,8 +51,8 @@ vector<double> Calculations::mahDistance(vector<double> mean,
     return md;
 }
 
-double Calculations::mahProduct(vector<double> centered,
-                                QSMatrix<double> inversecov) {
+double Calculations::mahProduct(vector<double> &centered,
+                                QSMatrix<double> &inversecov) {
     vector<double> tmp = inversecov * centered;
     double sum = 0;
     for (int i = 0; i < centered.size(); ++i) {
@@ -62,7 +62,7 @@ double Calculations::mahProduct(vector<double> centered,
 }
 
 // Transpose matrix and multiply itself
-QSMatrix<double> Calculations::transposeMultiply(vector<double> v) {
+QSMatrix<double> Calculations::transposeMultiply(vector<double> &v) {
     int size = v.size();
     QSMatrix<double> result(size, size, 0);
     #pragma omp parallel for
@@ -74,7 +74,7 @@ QSMatrix<double> Calculations::transposeMultiply(vector<double> v) {
     return result;
 };
 
-QSMatrix<double> Calculations::Cstep(QSMatrix<double> Hold, int h) {
+QSMatrix<double> Calculations::Cstep(QSMatrix<double> &Hold, int h) {
     vector<double> Told = mean_col(Hold);
     QSMatrix<double> Sold = covariance(Told, Hold);
     vector<double> md = mahDistance(Told, Sold);
@@ -84,4 +84,9 @@ QSMatrix<double> Calculations::Cstep(QSMatrix<double> Hold, int h) {
         out.row(i) = data.row((const unsigned int &) index[i]);
     }
     return out;
+}
+
+double Calculations::median(vector<double> &v) {
+	int size = v.size();
+	return v[(int) (size+1)/2];
 }

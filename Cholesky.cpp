@@ -11,8 +11,9 @@ using namespace std;
 
 
 template <typename T>
-QSMatrix<T> Cholesky<T>::decomposition(int n, QSMatrix<T>& A) {
+QSMatrix<T> Cholesky<T>::decomposition(QSMatrix<T>& A) {
     int i ,j;
+    int n = A.get_rows();
     QSMatrix<T> p(n, 1, 0);
     QSMatrix<T> out(n, n, 0);
     T s = 0;
@@ -34,18 +35,20 @@ QSMatrix<T> Cholesky<T>::decomposition(int n, QSMatrix<T>& A) {
 }
 
 template <typename T>
-T Cholesky<T>::determinant(int n, QSMatrix<T> &A) {
-    QSMatrix<T> decomp(decomposition(n, A));
+T Cholesky<T>::determinant(QSMatrix<T> &A) {
+	int n = A.get_rows();
+    QSMatrix<T> L(decomposition(A));
     T det = 1;
     for (int i = 0; i < n; ++i) {
-        det *= decomp(i, i);
+        det *= L(i, i);
     }
     return pow(det, 2);
 }
 
 template <typename T>
-QSMatrix<T> Cholesky<T>::inverse(int n, QSMatrix<T> &A) {
-    QSMatrix<T> L(decomposition(n, A));
+QSMatrix<T> Cholesky<T>::inverse(QSMatrix<T> &A) {
+	int n = A.get_rows();
+    QSMatrix<T> L(decomposition(A));
     QSMatrix<T> inverseL(n, n, 0);
     T sum = 0;
 

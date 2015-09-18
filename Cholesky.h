@@ -13,9 +13,9 @@ public:
     Cholesky() {};
     ~Cholesky() {};
 
-    QSMatrix<T> decomposition(int n, QSMatrix<T>& A);
-    T determinant(int n, QSMatrix<T>& A);
-    QSMatrix<T> inverse(int n, QSMatrix<T>& A);
+    QSMatrix<T> decomposition(QSMatrix<T>& A);
+    T determinant(QSMatrix<T>& A);
+    QSMatrix<T> inverse(QSMatrix<T>& A);
 
 };
 

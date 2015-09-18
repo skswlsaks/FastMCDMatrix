@@ -15,12 +15,14 @@ class Calculations {
 public:
     Calculations() {};
     ~Calculations() {};
-    vector<double> mean_col(QSMatrix<double> m);
-    QSMatrix<double> covariance(vector<double> mean, QSMatrix<double> m);
-    QSMatrix<double> transposeMultiply(vector<double> v);
-    vector<double> mahDistance(vector<double> mean, QSMatrix<double> cov);
-    double mahProduct(vector<double> centered, QSMatrix<double> inversecov);
-    QSMatrix<double> Cstep(QSMatrix<double> Hold, int h);
+    vector<double> mean_col(QSMatrix<double> &m);
+    QSMatrix<double> covariance(vector<double> &mean, QSMatrix<double> &m);
+    QSMatrix<double> transposeMultiply(vector<double> &v);
+    vector<double> mahDistance(vector<double> &mean, QSMatrix<double> &cov);
+    double mahProduct(vector<double> &centered, QSMatrix<double> &inversecov);
+    QSMatrix<double> Cstep(QSMatrix<double> &Hold, int h);
+
+    double median(vector<double> &v);
 
     // Sort vector value and get sorted index
     template <typename T>

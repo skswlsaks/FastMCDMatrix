@@ -7,8 +7,6 @@
 using namespace std;
 
 template <typename T> class Cholesky {
-private:
-
 public:
     Cholesky() {};
     ~Cholesky() {};

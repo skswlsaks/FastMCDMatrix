@@ -1,10 +1,9 @@
 #include "Execution.h"
-#include "Cholesky.h"
 
 
 QSMatrix<double> Execution::step4() {
     Sampling s;
-    Calculations cal;
+    Calculations<double> cal(data);
     Cholesky<double> cho;
     int n = (int) data.get_rows();
     int p = (int) data.get_cols();
@@ -30,11 +29,11 @@ QSMatrix<double> Execution::step4() {
             vector<double> mean_tmp = cal.mean_col(Hnew);
             QSMatrix<double> cov = cal.covariance(mean_tmp, Hnew);
             res[i] = cho.determinant(cov);
-            sets[i] = Hnew;
+            sets[i] = (Hnew);
         }
     };
 
-    vector<size_t> index = Calculations::sort_indexes(res);
+    vector<size_t> index = Calculations<double>::sort_indexes(res);
     
     vector<double> res2(10);
     vector<QSMatrix<double>> sets2(10);
@@ -48,12 +47,12 @@ QSMatrix<double> Execution::step4() {
     	res2[i] = cho.determinant(cov);
     	sets2[i] = H;
     }
-    index = Calculations::sort_indexes(res2);
+    index = Calculations<double>::sort_indexes(res2);
     return sets2[index[0]];
 }
 
 void Execution::reweight(QSMatrix<double> Hnew) {
-	Calculations cal;
+	Calculations<double> cal(data);
 	vector<double> mu = cal.mean_col(Hnew);
 	QSMatrix<double> s = cal.covariance(mu, Hnew);
 	vector<double> md = cal.mahDistance(mu, s);

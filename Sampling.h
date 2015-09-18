@@ -1,20 +1,16 @@
 #ifndef FASTMCD2_SAMPLING_H
 #define FASTMCD2_SAMPLING_H
 
-
 #include <vector>
 #include "matrix.h"
 
-using namespace std;
+extern QSMatrix<double> data;
 
 class Sampling {
-private:
-    QSMatrix<double> data;
 
 public:
 
     Sampling() {};
-    Sampling(QSMatrix<double>& dat) :data(dat) {};
     ~Sampling() {};
 
 

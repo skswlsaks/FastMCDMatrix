@@ -51,6 +51,9 @@ public:
 
     // Assign row and col
     std::vector<T> row(const unsigned& n);
+    
+    // Copy entire row
+    void row_copy(int row, std::vector<T> v);
 
     // Access the individual elements
     T& operator()(const unsigned& row, const unsigned& col);

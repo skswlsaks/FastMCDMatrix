@@ -283,6 +283,12 @@ std::vector<T> QSMatrix<T>::row(const unsigned& n) {
     return this->mat[n];
 }
 
+// Copy entire row
+template<typename T>
+void QSMatrix<T>::row_copy(int row, std::vector<T> v) {
+    (this->mat[row]) = v;
+}
+
 // Access the individual elements
 template<typename T>
 T& QSMatrix<T>::operator()(const unsigned& row, const unsigned& col) {

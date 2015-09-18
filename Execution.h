@@ -4,7 +4,9 @@
 #include "Scanner.h"
 #include "Sampling.h"
 #include "matrix.h"
+#include "Cholesky.h"
 #include "Calculation.h"
+
 
 extern QSMatrix<double> data;
 
@@ -14,7 +16,7 @@ public:
     ~Execution() {};
     QSMatrix<double> step4();
     void reweight(QSMatrix<double> Hnew);
-    void threading();
+    //void threading();
 
 private:
     double chisq[10] =  {

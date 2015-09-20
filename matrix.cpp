@@ -301,7 +301,7 @@ const T& QSMatrix<T>::operator()(const unsigned& row, const unsigned& col) const
     return this->mat[row][col];
 }
 
-
+// Print matrix
 template<typename T>
 void QSMatrix<T>::print() {
     for (int i=0; i < rows; i++) {

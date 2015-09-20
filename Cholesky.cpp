@@ -61,9 +61,8 @@ QSMatrix<T> Cholesky<T>::inverse(QSMatrix<T> &A) {
             inverseL(j, i) = sum / L(j, j);
         }
     }
-    return inverseL;
+    return (inverseL.transpose()) * inverseL;
 }
-
 
 #endif
 

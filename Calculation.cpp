@@ -22,7 +22,7 @@ vector<T> Calculations<T>::mean_col(QSMatrix<T> &m) {
 
 template <typename T>
 QSMatrix<T> Calculations<T>::covariance(vector<T> &mean,
-                                          QSMatrix<T> &m) {
+                                        QSMatrix<T> &m) {
     int cols = m.get_cols();
     int rows = m.get_rows();
     QSMatrix<T> centered(rows, cols, 0);
@@ -37,7 +37,7 @@ QSMatrix<T> Calculations<T>::covariance(vector<T> &mean,
 
 template <typename T>
 vector<T> Calculations<T>::mahDistance(vector<T> &mean,
-                                         QSMatrix<T> &cov) {
+                                       QSMatrix<T> &cov) {
     int n = data.get_rows();
     int m = data.get_cols();
     vector<T> md(n);
@@ -56,7 +56,7 @@ vector<T> Calculations<T>::mahDistance(vector<T> &mean,
 
 template <typename T>
 T Calculations<T>::mahProduct(vector<T> &centered,
-                                QSMatrix<T> &inversecov) {
+                              QSMatrix<T> &inversecov) {
     vector<T> tmp = inversecov * centered;
     T sum = 0;
     for (int i = 0; i < centered.size(); ++i) {

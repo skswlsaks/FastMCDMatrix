@@ -9,7 +9,9 @@
 using namespace std;
 
 
-
+// Calculate cholesky decomposition
+// Because the matrices are assumed to be s.p.d.
+// There is no s.p.d checking mechanism.
 template <typename T>
 QSMatrix<T> Cholesky<T>::decomposition(QSMatrix<T>& A) {
     int i ,j;
@@ -22,18 +24,20 @@ QSMatrix<T> Cholesky<T>::decomposition(QSMatrix<T>& A) {
 
     for (i = 0; i < n; ++i) {
         s = a(i, i);
-        p.init();
+        //p.init();
+        s = sqrt(s) / s;
         for (j = i; j < n; ++j) {
-            if (i == j)
-              s = sqrt(s) / s;
-            p(j, 0) = a(j, i) * s;
-            out(j, i) = a(j, i) * s;
+        	T tmp = a(j, i) * s;
+            p(j, 0) = tmp;
+            out(j, i) = tmp;
         }
         a -= p * p.transpose();
     }
     return out;
 }
 
+// Using cholesky decomposition to calculate matrix determinant
+// det(A) = (det(L)^2)
 template <typename T>
 T Cholesky<T>::determinant(QSMatrix<T> &A) {
 	int n = A.get_rows();
@@ -45,6 +49,7 @@ T Cholesky<T>::determinant(QSMatrix<T> &A) {
     return pow(det, 2);
 }
 
+// Calcualte inverse
 template <typename T>
 QSMatrix<T> Cholesky<T>::inverse(QSMatrix<T> &A) {
 	int n = A.get_rows();

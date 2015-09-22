@@ -38,7 +38,7 @@ QSMatrix<double> Execution::step4() {
     vector<double> res2(10);
     vector<QSMatrix<double>> sets2(10);
     for (int i = 0; i < 10; ++i) {
-    	QSMatrix<double> H = sets[i];
+    	QSMatrix<double> H = sets[index[i]];
     	for (int j = 0; j < 10; ++j) {
     		H = cal.Cstep(H, h);
     	}

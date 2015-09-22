@@ -4,9 +4,12 @@
 #include "matrix.h"
 #include "Cholesky.h"
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
+// Template for most essential calculation functions in whole process
+// T can be replaced by all the type of numbers to reduce dependencies of code
 
 template <typename T> class Calculations {
 private:
@@ -23,8 +26,9 @@ public:
 
     T median(vector<T> &v);
 
+
+
     // Sort vector value and get sorted index
-    
     static vector<size_t> sort_indexes(const vector<T> &v) {
         // initialize original index locations
         vector<size_t> idx(v.size());

@@ -3,7 +3,7 @@
 
 #include "Calculation.h"
 
-
+// Calculate column mean
 template <typename T>
 vector<T> Calculations<T>::mean_col(QSMatrix<T> &m) {
     int cols = m.get_cols();
@@ -20,6 +20,7 @@ vector<T> Calculations<T>::mean_col(QSMatrix<T> &m) {
     return result;
 }
 
+// Calculate covariance matrix
 template <typename T>
 QSMatrix<T> Calculations<T>::covariance(vector<T> &mean,
                                         QSMatrix<T> &m) {
@@ -35,13 +36,14 @@ QSMatrix<T> Calculations<T>::covariance(vector<T> &mean,
     return sum/(rows-1);
 }
 
+
 template <typename T>
 vector<T> Calculations<T>::mahDistance(vector<T> &mean,
                                        QSMatrix<T> &cov) {
     int n = data.get_rows();
     int m = data.get_cols();
     vector<T> md(n);
-
+    // Symmetric positive definite matrix -> using cholesky for efficiency
     Cholesky<T> cho;
     cov = cho.inverse(cov);
 
@@ -54,6 +56,7 @@ vector<T> Calculations<T>::mahDistance(vector<T> &mean,
     return md;
 }
 
+// seperate product function from mahalanobis function
 template <typename T>
 T Calculations<T>::mahProduct(vector<T> &centered,
                               QSMatrix<T> &inversecov) {
@@ -79,6 +82,7 @@ QSMatrix<T> Calculations<T>::transposeMultiply(vector<T> &v) {
     return result;
 };
 
+// Concentration-step in FastMCD paper
 template <typename T>
 QSMatrix<T> Calculations<T>::Cstep(QSMatrix<T> &Hold, int h) {
     vector<T> Told = mean_col(Hold);
@@ -92,6 +96,7 @@ QSMatrix<T> Calculations<T>::Cstep(QSMatrix<T> &Hold, int h) {
     return out;
 }
 
+// Calculate median of vector of numbers
 template <typename T>
 T Calculations<T>::median(vector<T> &v) {
 	int size = (int) v.size();

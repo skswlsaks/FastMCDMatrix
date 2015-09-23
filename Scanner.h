@@ -16,7 +16,7 @@ public:
     void split(const string& s, int rowNum, QSMatrix<double> &data);
     int getMatrixSize(char **argv);
     char deliminator = ',';
-    int colNum = 2;
+    int colNum = 3;
 };
 
 #endif /* defined(__FastMCD__Scanner__) */

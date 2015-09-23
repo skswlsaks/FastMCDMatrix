@@ -1,9 +1,7 @@
 #include <iostream>
 #include "Scanner.h"
-#include "math.h"
-#include "Sampling.h"
-#include "Cholesky.h"
-#include "Calculation.h"
+#include "Visualisation.h"
+#include "Execution.h"
 
 using namespace std;
 
@@ -11,22 +9,17 @@ extern QSMatrix<double> data;
 
 int main(int argc, char **argv) {
 
-
     Scanner *scanner = new Scanner();
     scanner->file(argc, argv);
-    //data.print();
 
-    Sampling sam;
-    QSMatrix<double> sample = sam.randomSampling(3, 1);
-    sample.print();
-
-
-    Calculations<double> cal(data);
-
-    //Execution e;
-    //e.step4();
+    
+    Execution e;
+    e.step4();
 
     delete scanner;
+    
+    Visualisation v;
+    v.loadVisualisation(argc, argv);
     
     // TODO:
     /* 1) Further debugging on Execution step (it seems working now)
@@ -37,4 +30,3 @@ int main(int argc, char **argv) {
     return 1;
 
 }
-

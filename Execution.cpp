@@ -1,4 +1,5 @@
 #include "Execution.h"
+//#include <omp.h>
 
 
 QSMatrix<double> Execution::step4() {
@@ -14,12 +15,12 @@ QSMatrix<double> Execution::step4() {
 
     #pragma omp parallel
     {
+        #pragma omp for
         for (int i = 0; i < 500; ++i) {
             QSMatrix<double> J;
             int tmppp = i;
             //do {
             J = s.randomSampling(p + 1, ++tmppp);
-            J.print();
             //} while(true);
             vector<double> mu0 = cal.mean_col(J);
             QSMatrix<double> S0 = cal.covariance(mu0, J);
@@ -33,6 +34,8 @@ QSMatrix<double> Execution::step4() {
         }
     };
 
+    cout << "Here" << endl;
+    
     vector<size_t> index = Calculations<double>::sort_indexes(res);
     
     vector<double> res2(10);

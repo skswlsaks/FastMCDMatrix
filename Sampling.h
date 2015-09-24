@@ -13,7 +13,7 @@ public:
     Sampling() {};
     ~Sampling() {};
 
-
+    double detOfSample(QSMatrix<double> s);
     QSMatrix<double> randomSampling(int p, int i);
 };
 

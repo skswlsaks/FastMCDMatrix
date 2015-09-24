@@ -14,8 +14,9 @@ class Execution {
 public:
     Execution() {};
     ~Execution() {};
+    vector<int> outlierDetection();
     QSMatrix<double> step4();
-    void reweight(QSMatrix<double> Hnew);
+    QSMatrix<double> reweight(vector<double> mah, QSMatrix<double> s);
     //void threading();
 
 private:

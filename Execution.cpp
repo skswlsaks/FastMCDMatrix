@@ -2,6 +2,45 @@
 //#include <omp.h>
 
 
+
+vector<int> Execution::outlierDetection() {
+	Calculations<double> cal(data);
+
+	vector<double> mu = cal.mean_col(data);
+	QSMatrix<double> s = cal.covariance(mu, data);
+
+	QSMatrix<double> H_MCD = step4();
+	vector<double> mu_MCD = cal.mean_col(H_MCD);
+	QSMatrix<double> s_MCD = cal.covariance(mu, H_MCD);
+	vector<double> mah_MCD = cal.mahDistance(mu_MCD, s_MCD);
+
+	QSMatrix<double> s_MCD_rw = reweight(mah_MCD, s_MCD);
+	vector<double> mah_MCD_rw = cal.mahDistance(mu_MCD, s_MCD_rw);
+
+	vector<int> outlier_ind;
+	int q = data.get_cols();
+	for (unsigned i = 0; i < data.get_rows(); ++i) {
+		if (mah_MCD_rw[i] > chisq[q-1])
+			outlier_ind.push_back(i);
+	}
+	int numOfOutlier = outlier_ind.size();
+	QSMatrix<double> outliers(numOfOutlier, q, 0);
+	for (int i = 0; i < numOfOutlier; ++i)
+		outliers.row_copy(i, data.row(outlier_ind[i]));
+
+	vector<double> muOut = cal.mean_col(outliers);
+	QSMatrix<double> SOut = cal.covariance(muOut, outliers);
+	vector<double> mahaOut = cal.mahDistance(muOut, SOut);
+
+	vector<int> final_Outlier_ind;
+	for (unsigned i = 0; i < data.get_rows(); ++i) {
+		if (mahaOut[i] < mah_MCD_rw[i])
+			final_Outlier_ind.push_back(i);
+	}
+
+	return final_Outlier_ind;
+}
+
 QSMatrix<double> Execution::step4() {
     Sampling s;
     Calculations<double> cal(data);
@@ -54,12 +93,8 @@ QSMatrix<double> Execution::step4() {
     return sets2[index[0]];
 }
 
-void Execution::reweight(QSMatrix<double> Hnew) {
+QSMatrix<double> Execution::reweight(vector<double> mah, QSMatrix<double> s) {
 	Calculations<double> cal(data);
-	vector<double> mu = cal.mean_col(Hnew);
-	QSMatrix<double> s = cal.covariance(mu, Hnew);
-	vector<double> md = cal.mahDistance(mu, s);
-	QSMatrix<double> s_rw = s * (cal.median(md) / chisq[mu.size()-1]);
-	vector<double> md_rw = cal.mahDistance(mu, s_rw);
-
+	QSMatrix<double> s_rw = s * (cal.median(mah) / chisq[data.get_cols()-1]);
+	return s_rw;
 }
